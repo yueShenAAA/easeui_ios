@@ -51,8 +51,7 @@
 
 - (void)_setupSubviews
 {
-//    self.backgroundColor = _viewModel.chatBarBgColor;
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = _viewModel.chatBarBgColor;
     UIView *line = [[UIView alloc] init];
     line.backgroundColor = [UIColor colorWithHexString:@"#000000"];
     line.alpha = 0.1;
