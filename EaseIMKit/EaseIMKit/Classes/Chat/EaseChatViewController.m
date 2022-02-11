@@ -41,7 +41,6 @@
     BOOL _isReloadViewWithModel; //重新刷新会话页面
 }
 @property (nonatomic, strong) EMMoreFunctionView *longPressView;
-@property (nonatomic, strong) EMChatBar *chatBar;
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
 @property (nonatomic, strong) NSMutableArray<EMMessage *> *messageList;
 @end
