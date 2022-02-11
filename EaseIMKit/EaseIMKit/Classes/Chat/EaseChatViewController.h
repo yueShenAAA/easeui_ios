@@ -10,6 +10,7 @@
 
 #import "EaseChatViewModel.h"
 #import "EaseChatViewControllerDelegate.h"
+#import "EMChatBar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

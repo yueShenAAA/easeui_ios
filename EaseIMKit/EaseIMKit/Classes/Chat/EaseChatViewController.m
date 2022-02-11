@@ -21,7 +21,6 @@
 #import "EMMsgTouchIncident.h"
 #import "EaseChatViewController+EMMsgLongPressIncident.h"
 #import "EaseChatViewController+ChatToolBarIncident.h"
-#import "EMChatBar.h"
 #import "UITableView+Refresh.h"
 #import "EMConversation+EaseUI.h"
 #import "EMSingleChatViewController.h"
