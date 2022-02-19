@@ -10,9 +10,9 @@
 #import "UIImage+EaseUI.h"
 #import "UIColor+EaseUI.h"
 
-#define kTextViewMinHeight 32
+#define kTextViewMinHeight 34
 #define kTextViewMaxHeight 80
-#define kIconwidth 22
+#define kIconwidth 23
 #define kModuleMargin 10
 
 @interface EMChatBar()<UITextViewDelegate>
@@ -24,8 +24,9 @@
 @property (nonatomic, strong) UIButton *selectedButton;
 @property (nonatomic, strong) UIView *currentMoreView;
 @property (nonatomic, strong) UIButton *conversationToolBarBtn;//更多
-@property (nonatomic, strong) UIButton *emojiButton;//表情
+//@property (nonatomic, strong) UIButton *emojiButton;//表情
 @property (nonatomic, strong) UIButton *audioButton;//语音
+@property (nonatomic, strong) UIButton *keyBroadButton;//语音
 @property (nonatomic, strong) UIView *bottomLine;//下划线
 //@property (nonatomic, strong) UIButton *audioDescBtn;
 @property (nonatomic, strong) EaseChatViewModel *viewModel;
@@ -51,7 +52,8 @@
 
 - (void)_setupSubviews
 {
-    self.backgroundColor = _viewModel.chatBarBgColor;
+//    self.backgroundColor = _viewModel.chatBarBgColor;
+    self.backgroundColor = UIColor.whiteColor;
     UIView *line = [[UIView alloc] init];
     line.backgroundColor = [UIColor colorWithHexString:@"#000000"];
     line.alpha = 0.1;
@@ -64,20 +66,34 @@
     }];
     
     self.audioButton = [[UIButton alloc] init];
-    [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"audio-unSelected"] forState:UIControlStateNormal];
-    [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
+    [_audioButton setImage:[UIImage imageNamed:@"组 2520"] forState:UIControlStateNormal];
+//    [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"audio-unSelected"] forState:UIControlStateNormal];
+//    [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
     [_audioButton addTarget:self action:@selector(audioButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.audioButton];
     [_audioButton Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.top.equalTo(self).offset(10);
         make.left.equalTo(self).offset(16);
-        make.width.Ease_equalTo(@16);
+        make.width.Ease_equalTo(@23);
         make.height.Ease_equalTo(kIconwidth);
     }];
     
+    self.keyBroadButton = [[UIButton alloc] init];
+    [_keyBroadButton setImage:[UIImage imageNamed:@"组 2721"] forState:UIControlStateNormal];
+//    [_keyBroadButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
+    [_keyBroadButton addTarget:self action:@selector(audioButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.keyBroadButton];
+    [_keyBroadButton Ease_makeConstraints:^(EaseConstraintMaker *make) {
+        make.top.equalTo(self).offset(10);
+        make.left.equalTo(self.audioButton.ease_right).offset(kModuleMargin);
+        make.width.Ease_equalTo(@23);
+        make.height.Ease_equalTo(kIconwidth);
+    }];
+    
+    
     self.conversationToolBarBtn = [[UIButton alloc] init];
-    [_conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"more-unselected"] forState:UIControlStateNormal];
-    [_conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"more-selected"] forState:UIControlStateSelected];
+    [_conversationToolBarBtn setImage:[UIImage imageNamed:@"组 2711"] forState:UIControlStateNormal];
+    [_conversationToolBarBtn setImage:[UIImage imageNamed:@"组 2554"] forState:UIControlStateSelected];
     [_conversationToolBarBtn addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_conversationToolBarBtn];
     [_conversationToolBarBtn Ease_makeConstraints:^(EaseConstraintMaker *make) {
@@ -86,16 +102,16 @@
         make.width.height.Ease_equalTo(kIconwidth);
     }];
     
-    self.emojiButton = [[UIButton alloc] init];
-    [_emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"face"] forState:UIControlStateNormal];
-    [_emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
-    [_emojiButton addTarget:self action:@selector(emoticonButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_emojiButton];
-    [_emojiButton Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.top.equalTo(self).offset(10);
-        make.right.equalTo(self.conversationToolBarBtn.ease_left).offset(-kModuleMargin);
-        make.width.height.Ease_equalTo(kIconwidth);
-    }];
+//    self.emojiButton = [[UIButton alloc] init];
+//    [_emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"face"] forState:UIControlStateNormal];
+//    [_emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
+//    [_emojiButton addTarget:self action:@selector(emoticonButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+//    [self addSubview:_emojiButton];
+//    [_emojiButton Ease_makeConstraints:^(EaseConstraintMaker *make) {
+//        make.top.equalTo(self).offset(10);
+//        make.right.equalTo(self.conversationToolBarBtn.ease_left).offset(-kModuleMargin);
+//        make.width.height.Ease_equalTo(kIconwidth);
+//    }];
     
     self.textView = [[EaseTextView alloc] init];
     self.textView.delegate = self;
@@ -103,29 +119,29 @@
     self.textView.font = [UIFont systemFontOfSize:16];
     self.textView.textAlignment = NSTextAlignmentLeft;
     
-    self.textView.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 0);
+    self.textView.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 10);
     if (@available(iOS 11.1, *)) {
         self.textView.verticalScrollIndicatorInsets = UIEdgeInsetsMake(12, 20, 2, 0);
     } else {
         // Fallback on earlier versions
     }
     self.textView.returnKeyType = UIReturnKeySend;
-    self.textView.backgroundColor = [UIColor whiteColor];
-    self.textView.layer.cornerRadius = 16;
+    self.textView.backgroundColor = [UIColor colorWithRed:248/255.0 green:248/255.0 blue:248/255.0 alpha:1.0];
+    self.textView.layer.cornerRadius = 5.f;
     [self addSubview:self.textView];
     [self.textView Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.top.equalTo(self).offset(5);
         make.height.Ease_equalTo(kTextViewMinHeight);
         if (_viewModel.inputBarStyle == EaseInputBarStyleAll) {
-            make.left.equalTo(self.audioButton.ease_right).offset(kModuleMargin);
-            make.right.equalTo(self.emojiButton.ease_left).offset(-kModuleMargin);
+            make.left.equalTo(self.keyBroadButton.ease_right).offset(kModuleMargin);
+            make.right.equalTo(self.conversationToolBarBtn.ease_left).offset(-kModuleMargin);
         }
         if (_viewModel.inputBarStyle == EaseInputBarStyleNoAudio) {
             make.left.equalTo(self).offset(16);
-            make.right.equalTo(self.emojiButton.ease_left).offset(-kModuleMargin);
+            make.right.equalTo(self.conversationToolBarBtn.ease_left).offset(-kModuleMargin);
         }
         if (_viewModel.inputBarStyle == EaseInputBarStyleNoEmoji) {
-            make.left.equalTo(self.audioButton.ease_right).offset(kModuleMargin);
+            make.left.equalTo(self.keyBroadButton.ease_right).offset(kModuleMargin);
             make.right.equalTo(self.conversationToolBarBtn.ease_left).offset(-kModuleMargin);
         }
         if (_viewModel.inputBarStyle == EaseInputBarStyleNoAudioAndEmoji) {
@@ -158,7 +174,8 @@
     [self.audioDescBtn addTarget:self action:@selector(recordButtonTouchCancelEnd) forControlEvents:UIControlEventTouchUpOutside];*/
     
     self.bottomLine = [[UIView alloc] init];
-    _bottomLine.backgroundColor = [UIColor colorWithHexString:@"#000000"];
+//    _bottomLine.backgroundColor = [UIColor colorWithHexString:@"#000000"];
+    _bottomLine.backgroundColor = UIColor.clearColor;
     _bottomLine.alpha = 0.1;
     [self addSubview:self.bottomLine];
     [_bottomLine Ease_makeConstraints:^(EaseConstraintMaker *make) {
@@ -182,9 +199,10 @@
         }];
     }
     
-    self.emojiButton.selected = NO;
+//    self.emojiButton.selected = NO;
     self.conversationToolBarBtn.selected = NO;
     self.audioButton.selected = NO;
+    self.keyBroadButton.selected = NO;
     return YES;
 }
 
@@ -324,7 +342,7 @@
     }
     if (!self.audioButton.isSelected) {
         [self.audioButton Ease_updateConstraints:^(EaseConstraintMaker *make) {
-            make.width.Ease_equalTo(@16);
+            make.width.Ease_equalTo(@23);
         }];
     } else {
         [self.audioButton Ease_updateConstraints:^(EaseConstraintMaker *make) {
@@ -361,8 +379,9 @@
         self.selectedButton = aButton;
     }
     if (!self.audioButton.isSelected) {
+        
         [self.audioButton Ease_updateConstraints:^(EaseConstraintMaker *make) {
-            make.width.Ease_equalTo(@16);
+            make.width.Ease_equalTo(@23);
         }];
     } else {
         [self.audioButton Ease_updateConstraints:^(EaseConstraintMaker *make) {
@@ -373,14 +392,38 @@
     return isEditing;
 }
 
-//语音
+//语音/键盘
 - (void)audioButtonAction:(UIButton *)aButton
 {
-    if([self _buttonAction:aButton]) {
-        return;
-    }
-
-    if (aButton.selected) {
+    if (aButton == self.keyBroadButton) {
+        [self.textView becomeFirstResponder];
+    }else{
+//        if([self _buttonAction:aButton]) {
+//            return;
+//        }
+        [self.textView resignFirstResponder];
+        if (self.currentMoreView) {
+            [self.currentMoreView removeFromSuperview];
+            self.currentMoreView = nil;
+            [self _remakeButtonsViewConstraints];
+        }
+        
+//        if (aButton.selected) {
+//            if (self.recordAudioView) {
+//                self.currentMoreView = self.recordAudioView;
+//                [self addSubview:self.recordAudioView];
+//                [self.recordAudioView Ease_makeConstraints:^(EaseConstraintMaker *make) {
+//                    make.left.equalTo(self);
+//                    make.right.equalTo(self);
+//                    make.bottom.equalTo(self).offset(-EMVIEWBOTTOMMARGIN);
+//                }];
+//                [self _remakeButtonsViewConstraints];
+//
+//                if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidShowMoreViewAction)]) {
+//                    [self.delegate chatBarDidShowMoreViewAction];
+//                }
+//            }
+//        }
         if (self.recordAudioView) {
             self.currentMoreView = self.recordAudioView;
             [self addSubview:self.recordAudioView];

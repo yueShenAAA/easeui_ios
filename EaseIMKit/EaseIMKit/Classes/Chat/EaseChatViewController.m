@@ -31,6 +31,7 @@
 #import "EaseHeaders.h"
 #import "EaseEnums.h"
 #import "EaseDefines.h"
+#import "EMChatBar.h"
 
 @interface EaseChatViewController ()<UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, EMChatManagerDelegate, EMChatBarDelegate, EaseMessageCellDelegate, EaseChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate, EMMoreFunctionViewDelegate>
 {
@@ -42,6 +43,7 @@
 @property (nonatomic, strong) EMMoreFunctionView *longPressView;
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
 @property (nonatomic, strong) NSMutableArray<EMMessage *> *messageList;
+@property (nonatomic, strong) EMChatBar *chatBar;
 @end
 
 @implementation EaseChatViewController
