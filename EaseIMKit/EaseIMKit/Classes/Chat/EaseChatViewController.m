@@ -105,12 +105,12 @@
         [self refreshTableView:YES];
     });
 }
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.msgTimelTag = -1;
     [self _setupChatSubviews];
+    
     /*
     //草稿
     if (![[self.currentConversation draft] isEqualToString:@""]) {
@@ -179,26 +179,38 @@
 - (void)_setupChatSubviews
 {
     self.view.backgroundColor = [UIColor clearColor];
+    if (!_isRecord) {
+        self.chatBar = [[EMChatBar alloc] initWithViewModel:_viewModel];
+        self.chatBar.delegate = self;
+        [self.view addSubview:self.chatBar];
+        [self.chatBar Ease_makeConstraints:^(EaseConstraintMaker *make) {
+            make.left.equalTo(self.view);
+            make.right.equalTo(self.view);
+            make.bottom.equalTo(self.view);
+        }];
+        //会话工具栏
+        [self _setupChatBarMoreViews];
+        
+        self.tableView.backgroundColor = _viewModel.chatViewBgColor;
+        [self.view addSubview:self.tableView];
+        [self.tableView Ease_remakeConstraints:^(EaseConstraintMaker *make) {
+            make.top.equalTo(self.view);
+            make.left.equalTo(self.view);
+            make.right.equalTo(self.view);
+            make.bottom.equalTo(self.chatBar.ease_top);
+        }];
+    }else{
+        self.tableView.backgroundColor = _viewModel.chatViewBgColor;
+        [self.view addSubview:self.tableView];
+        [self.tableView Ease_remakeConstraints:^(EaseConstraintMaker *make) {
+            make.top.equalTo(self.view);
+            make.left.equalTo(self.view);
+            make.right.equalTo(self.view);
+            make.bottom.equalTo(self.view).offset(-50);
+        }];
+    }
     
-    self.chatBar = [[EMChatBar alloc] initWithViewModel:_viewModel];
-    self.chatBar.delegate = self;
-    [self.view addSubview:self.chatBar];
-    [self.chatBar Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.bottom.equalTo(self.view);
-    }];
-    //会话工具栏
-    [self _setupChatBarMoreViews];
     
-    self.tableView.backgroundColor = _viewModel.chatViewBgColor;
-    [self.view addSubview:self.tableView];
-    [self.tableView Ease_remakeConstraints:^(EaseConstraintMaker *make) {
-        make.top.equalTo(self.view);
-        make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.bottom.equalTo(self.chatBar.ease_top);
-    }];
 }
 
 - (void)_setupChatBarMoreViews
@@ -215,7 +227,7 @@
     
     //更多
     __weak typeof(self) weakself = self;
-    EaseExtMenuModel *photoAlbumExtModel = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"photo-album"] funcDesc:EaseLocalizableString(@"photo", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+    EaseExtMenuModel *photoAlbumExtModel = [[EaseExtMenuModel alloc]initWithData:[UIImage imageNamed:@"Chat_图片"] funcDesc:@"相册" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
         [weakself chatToolBarComponentIncidentAction:EMChatToolBarPhotoAlbum];
     }];
     EaseExtMenuModel *cameraExtModel = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"camera"] funcDesc:EaseLocalizableString(@"camera", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
@@ -232,6 +244,7 @@
         extMenuArray = [self.delegate inputBarExtMenuItemArray:extMenuArray conversationType:_currentConversation.type];
     }
     EMMoreFunctionView *moreFunction = [[EMMoreFunctionView alloc]initWithextMenuModelArray:extMenuArray menuViewModel:[[EaseExtMenuViewModel alloc]initWithType:ExtTypeChatBar itemCount:[extMenuArray count] extFuncModel:_viewModel.extFuncModel]];
+    moreFunction.backgroundColor = UIColor.whiteColor;
     self.chatBar.moreFunctionView = moreFunction;
 }
 

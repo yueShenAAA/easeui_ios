@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) NSString *moreMsgId;  //第一条消息的消息id
 @property (nonatomic) NSTimeInterval msgTimelTag;   //消息时间格式化
-
+@property (nonatomic, assign)BOOL isRecord;//是否是聊天记录
 
 + (EaseChatViewController *)initWithConversationId:(NSString *)aConversationId
                       conversationType:(EMConversationType)aType
