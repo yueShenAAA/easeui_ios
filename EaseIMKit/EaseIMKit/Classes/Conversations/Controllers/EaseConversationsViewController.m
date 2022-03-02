@@ -282,17 +282,20 @@ EMClientDelegate
 
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
-    if (aMessages && [aMessages count]) {
-        EMMessage *msg = aMessages[0];
-        if(msg.body.type == EMMessageBodyTypeText) {
-            EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:msg.conversationId type:EMConversationTypeGroupChat createIfNotExist:NO];
-            //群聊@“我”提醒
-            NSString *content = [NSString stringWithFormat:@"@%@",EMClient.sharedClient.currentUsername];
-            if(conversation.type == EMConversationTypeGroupChat && [((EMTextMessageBody *)msg.body).text containsString:content]) {
-                [conversation setRemindMe:msg.messageId];
-            };
-        }
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(lyEaesmessagesDidReceive:)]) {
+        [self.delegate lyEaesmessagesDidReceive:aMessages];
     }
+//    if (aMessages && [aMessages count]) {
+//        EMMessage *msg = aMessages[0];
+//        if(msg.body.type == EMMessageBodyTypeText) {
+//            EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:msg.conversationId type:EMConversationTypeGroupChat createIfNotExist:NO];
+//            //群聊@“我”提醒
+//            NSString *content = [NSString stringWithFormat:@"@%@",EMClient.sharedClient.currentUsername];
+//            if(conversation.type == EMConversationTypeGroupChat && [((EMTextMessageBody *)msg.body).text containsString:content]) {
+//                [conversation setRemindMe:msg.messageId];
+//            };
+//        }
+//    }
     [self _loadAllConversationsFromDB];
 }
 

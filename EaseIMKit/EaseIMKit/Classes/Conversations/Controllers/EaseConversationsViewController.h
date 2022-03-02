@@ -34,6 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<EaseUserDelegate>)easeUserDelegateAtConversationId:(NSString *)conversationId
                                         conversationType:(EMConversationType)type;
 
+- (void)lyEaesmessagesDidReceive:(NSArray *)aMessages;
 @end
 
 @interface EaseConversationsViewController : EaseBaseTableViewController

@@ -132,10 +132,8 @@
     [EaseIMKitManager.shared markAllMessagesAsReadWithConversation:self.currentConversation];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cleanPopupControllerView) name:CALL_MAKE1V1 object:nil];
@@ -230,7 +228,7 @@
     EaseExtMenuModel *photoAlbumExtModel = [[EaseExtMenuModel alloc]initWithData:[UIImage imageNamed:@"Chat_图片"] funcDesc:@"相册" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
         [weakself chatToolBarComponentIncidentAction:EMChatToolBarPhotoAlbum];
     }];
-    EaseExtMenuModel *cameraExtModel = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"camera"] funcDesc:EaseLocalizableString(@"camera", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+    EaseExtMenuModel *cameraExtModel = [[EaseExtMenuModel alloc]initWithData:[UIImage imageNamed:@"Chat_拍照"] funcDesc:@"拍照" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
         [weakself chatToolBarComponentIncidentAction:EMChatToolBarCamera];
     }];
     EaseExtMenuModel *locationExtModel = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"location"] funcDesc:EaseLocalizableString(@"location", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
@@ -857,8 +855,7 @@
 
 #pragma mark - Action
 
-- (void)cleanPopupControllerView
-{
+- (void)cleanPopupControllerView{
     [self.view endEditing:YES];
     [self hideLongPressView];
     [self.chatBar clearMoreViewAndSelectedButton];
@@ -893,8 +890,7 @@
 
 //发送消息体
 - (void)sendMessageWithBody:(EMMessageBody *)aBody
-                        ext:(NSDictionary * __nullable)aExt
-{
+                        ext:(NSDictionary * __nullable)aExt{
     NSString *from = [[EMClient sharedClient] currentUsername];
     NSString *to = self.currentConversation.conversationId;
     EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:aBody ext:aExt];

@@ -26,6 +26,7 @@
 - (instancetype)initGroupChatViewControllerWithCoversationid:(NSString *)conversationId
                                                chatViewModel:(EaseChatViewModel *)viewModel
 {
+    
     return [super initChatViewControllerWithCoversationid:conversationId
                        conversationType:EMConversationTypeGroupChat
                           chatViewModel:(EaseChatViewModel *)viewModel];
@@ -42,6 +43,8 @@
     [[EMClient sharedClient].groupManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+
 
 #pragma mark - EaseMessageCellDelegate
 
@@ -65,6 +68,7 @@
         }];
     }
 }
+
 
 #pragma mark - EMChatManagerDelegate
 

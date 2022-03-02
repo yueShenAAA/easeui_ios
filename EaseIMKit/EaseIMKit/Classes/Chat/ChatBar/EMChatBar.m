@@ -214,7 +214,7 @@
         }
         return NO;
     }
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"shouldChangeTextInRange" object:nil userInfo:@{@"text":text,@"textView":textView}];
     if (self.delegate && [self.delegate respondsToSelector:@selector(textView:shouldChangeTextInRange:replacementText:)]) {
         return [self.delegate textView:textView shouldChangeTextInRange:range replacementText:text];
     }
