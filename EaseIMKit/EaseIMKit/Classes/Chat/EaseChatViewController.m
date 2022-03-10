@@ -92,7 +92,9 @@
         [EaseIMKitManager.shared setConversationId:_currentConversation.conversationId];
         if (!_viewModel) {
             _viewModel = [[EaseChatViewModel alloc] init];
+            
         }
+        _viewModel.avatarStyle = Circular;
     }
     return self;
 }
